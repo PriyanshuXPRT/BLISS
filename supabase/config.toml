@@ -1,0 +1,15 @@
+project_id = "ipnywrvwszqlaykbkske"
+
+[functions]
+  [functions.advance-billing]
+    verify_jwt = false
+  [functions.ai-optimizer]
+    verify_jwt = false
+  [functions.cosigner-access]
+    verify_jwt = false
+  [functions.vault-health]
+    verify_jwt = false
+  [functions.public-resume]
+    verify_jwt = false
+  [functions.send-subscription-alerts]
+    verify_jwt = false

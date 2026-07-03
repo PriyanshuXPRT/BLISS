@@ -1,0 +1,80 @@
+# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
+
+# dependencies
+/node_modules
+/.pnp
+.pnp.*
+.yarn/*
+!.yarn/patches
+!.yarn/plugins
+!.yarn/releases
+!.yarn/versions
+
+# testing
+/coverage
+
+# next.js
+/.next/
+/out/
+
+# production
+/build
+
+# misc
+.DS_Store
+*.pem
+
+# debug
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# env files (can opt-in for committing if needed)
+.env*
+!.env.example
+
+# vercel
+.vercel
+
+# typescript
+*.tsbuildinfo
+next-env.d.ts
+
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+.Python
+*.egg-info/
+dist/
+*.egg
+.venv/
+venv/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# AlgoKit debug maps (large binary files, regenerate via python scripts/build.py)
+smart_contracts/artifacts/**/*.puya.map
+
+# Deployment secrets
+.env
+.env.local
+
+# Replit config files — managed by Replit, not needed on GitHub
+.replit
+replit.md
+
+# Private demo materials
+demo-script-video.html
+demo-script-video.pdf
+generate-demo-pdf.js
+bliss-demo-script.pdf
+
+# Deployer wallet files — contain mnemonics, never commit
+.deployer.*.json
+
+# Lovable/AI agent metadata
+.agents/
+attached_assets/

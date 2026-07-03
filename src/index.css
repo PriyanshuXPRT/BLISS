@@ -1,0 +1,319 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@font-face {
+  font-family: "Departure Mono";
+  src: url("/fonts/DepartureMono-Regular.woff2") format("woff2");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Satoshi";
+  src: url("https://cdn.jsdelivr.net/gh/nicholasgillespie/fonts@main/satoshi/Satoshi-Variable.woff2") format("woff2");
+  font-weight: 300 900;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Satoshi";
+  src: url("https://cdn.jsdelivr.net/gh/nicholasgillespie/fonts@main/satoshi/Satoshi-VariableItalic.woff2") format("woff2");
+  font-weight: 300 900;
+  font-style: italic;
+  font-display: swap;
+}
+
+@layer base {
+  :root {
+    --background: 40 20% 96%;
+    --foreground: 30 10% 10%;
+    --card: 40 20% 98%;
+    --card-foreground: 30 10% 10%;
+    --popover: 40 20% 98%;
+    --popover-foreground: 30 10% 10%;
+    --primary: 30 10% 10%;
+    --primary-foreground: 40 20% 96%;
+    --secondary: 40 15% 92%;
+    --secondary-foreground: 30 10% 10%;
+    --muted: 40 15% 92%;
+    --muted-foreground: 30 5% 45%;
+    --accent: 40 15% 92%;
+    --accent-foreground: 30 10% 10%;
+    --destructive: 0 72% 51%;
+    --destructive-foreground: 0 0% 100%;
+    --border: 30 10% 88%;
+    --input: 30 10% 88%;
+    --ring: 30 10% 10%;
+    --radius: 0.5rem;
+
+    --accent-gold: 38 65% 58%;
+    --accent-gold-hover: 38 70% 47%;
+
+    --font-display: "Instrument Serif", Georgia, serif;
+    --font-body: "Satoshi", "DM Sans", system-ui, sans-serif;
+  }
+
+  .dark {
+    --background: 0 0% 4%;
+    --foreground: 0 0% 93%;
+    --card: 0 0% 7%;
+    --card-foreground: 0 0% 93%;
+    --popover: 0 0% 7%;
+    --popover-foreground: 0 0% 93%;
+    --primary: 0 0% 93%;
+    --primary-foreground: 0 0% 4%;
+    --secondary: 0 0% 12%;
+    --secondary-foreground: 0 0% 93%;
+    --muted: 0 0% 12%;
+    --muted-foreground: 0 0% 52%;
+    --accent: 0 0% 12%;
+    --accent-foreground: 0 0% 93%;
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 0 0% 100%;
+    --border: 0 0% 16%;
+    --input: 0 0% 16%;
+    --ring: 0 0% 93%;
+
+    --accent-gold: 43 72% 62%;
+    --accent-gold-hover: 43 80% 52%;
+  }
+
+  * {
+    border-color: hsl(var(--border));
+  }
+
+  body {
+    background-color: hsl(var(--background));
+    color: hsl(var(--foreground));
+    font-family: var(--font-body);
+  }
+}
+
+@layer utilities {
+  .font-display {
+    font-family: var(--font-display);
+  }
+
+  .font-body {
+    font-family: var(--font-body);
+  }
+
+  .font-mono-pixel {
+    font-family: "Departure Mono", "Courier New", monospace;
+  }
+
+  /* Accent gold utilities */
+  .text-accent-gold {
+    color: hsl(var(--accent-gold));
+  }
+  .bg-accent-gold {
+    background-color: hsl(var(--accent-gold));
+  }
+  .border-accent-gold {
+    border-color: hsl(var(--accent-gold));
+  }
+  .glow-gold {
+    box-shadow: 0 0 20px hsl(var(--accent-gold) / 0.15), 0 0 6px hsl(var(--accent-gold) / 0.1);
+  }
+  .glow-gold-sm {
+    box-shadow: 0 0 12px hsl(var(--accent-gold) / 0.12);
+  }
+
+  /* Ghost watermark text behind headings */
+  .ghost-text {
+    position: absolute;
+    top: -0.15em;
+    left: -0.02em;
+    font-family: var(--font-display);
+    font-size: clamp(6rem, 15vw, 12rem);
+    font-weight: 400;
+    line-height: 1;
+    color: hsl(var(--foreground));
+    opacity: 0.03;
+    pointer-events: none;
+    user-select: none;
+    white-space: nowrap;
+    z-index: -1;
+  }
+
+  /* Hide scrollbar but keep scroll functionality */
+  .scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;
+  }
+
+  /* === Micro-interaction utilities === */
+
+  /* Vault lock click-clack: 2-step rotate-and-snap when transitioning to locked. */
+  .lock-clack {
+    animation: unsub-lock-clack 520ms cubic-bezier(0.42, 0, 0.2, 1.6) 1;
+    transform-origin: 50% 60%;
+  }
+
+  /* Tab inkblot underline: a 2px bar that draws from left to right under the
+   * active sidebar item. The underline transitions horizontally between active
+   * items rather than redrawing each time. */
+  .ink-underline {
+    position: relative;
+  }
+  .ink-underline[data-active="true"]::after {
+    content: "";
+    position: absolute;
+    left: 0.5rem;
+    right: 0.5rem;
+    bottom: -2px;
+    height: 2px;
+    background-color: currentColor;
+    border-radius: 1px;
+    transform-origin: left center;
+    animation: unsub-inkblot 320ms ease-out forwards;
+  }
+
+  /* Folder card "physical tab" tilt: lifts up and tilts forward when active,
+   * tilts the unselected siblings backward at -2deg. */
+  .folder-tab {
+    transition: transform 240ms cubic-bezier(0.22, 1, 0.36, 1);
+    transform-origin: center bottom;
+  }
+  .folder-tab[data-active="true"] {
+    transform: translateY(-4px);
+  }
+  .folder-list[data-has-active="true"] .folder-tab:not([data-active="true"]) {
+    transform: rotateX(-2deg) scale(0.99);
+    opacity: 0.85;
+  }
+
+  /* Calendar doomscroll guard: applied to the day grid when viewing
+   * 6+ months in the future. */
+  .doomscroll-guard {
+    opacity: 0.3;
+    transition: opacity 280ms ease-out;
+    position: relative;
+  }
+  .doomscroll-guard::before {
+    content: "speculative";
+    position: absolute;
+    bottom: 0.5rem;
+    right: 0.75rem;
+    font-family: var(--font-body);
+    font-size: 0.625rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: hsl(var(--muted-foreground));
+    pointer-events: none;
+    z-index: 1;
+  }
+
+  /* Monospace caret cursor for developer pages (API Docs, x402 Demo). */
+  .dev-cursor,
+  .dev-cursor * {
+    cursor: text;
+  }
+  .dev-cursor a,
+  .dev-cursor button,
+  .dev-cursor [role="button"],
+  .dev-cursor input,
+  .dev-cursor select,
+  .dev-cursor textarea {
+    cursor: pointer;
+  }
+  .dev-cursor a:hover,
+  .dev-cursor button:hover:not(:disabled),
+  .dev-cursor [role="button"]:hover {
+    cursor: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='12' height='18' viewBox='0 0 12 18'><rect x='2' y='1' width='8' height='16' fill='%23000'/><animate attributeName='opacity' values='1;0;1' dur='1s' repeatCount='indefinite'/></svg>") 6 9, pointer;
+  }
+}
+
+/* === Keyframes === */
+
+@keyframes unsub-lock-clack {
+  0%   { transform: rotate(0deg); }
+  35%  { transform: rotate(-14deg); }
+  55%  { transform: rotate(2deg) scale(1.06); }
+  72%  { transform: rotate(-3deg) scale(1.04); }
+  100% { transform: rotate(0deg) scale(1); }
+}
+
+@keyframes unsub-inkblot {
+  from { transform: scaleX(0); }
+  to   { transform: scaleX(1); }
+}
+
+@keyframes unsub-shrink-ring {
+  from { transform: scale(1.1); opacity: 0.9; }
+  to   { transform: scale(0.85); opacity: 0; }
+}
+
+@keyframes unsub-equalizer {
+  0%, 100% { transform: scaleY(0.4); }
+  50%      { transform: scaleY(1); }
+}
+
+
+/* Phrase fade-in animation for Hero headline cycling */
+@keyframes fade-in {
+  from { opacity: 0; transform: translateY(6px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes fade-out {
+  from { opacity: 1; transform: translateY(0); }
+  to   { opacity: 0; transform: translateY(-6px); }
+}
+@keyframes slide {
+  0%   { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+@keyframes shimmer {
+  0%   { background-position: 200% center; }
+  100% { background-position: -200% center; }
+}
+.animate-fade-in {
+  animation: fade-in 0.4s ease-out both;
+}
+.animate-fade-out {
+  animation: fade-out 0.25s ease-in both;
+}
+
+
+/* Mobile touch feedback */
+@media (hover: none) {
+  button, a, [role="button"] {
+    -webkit-tap-highlight-color: transparent;
+  }
+}
+
+/* Safe area for notched devices */
+@supports (padding-bottom: env(safe-area-inset-bottom)) {
+  .pb-safe {
+    padding-bottom: env(safe-area-inset-bottom);
+  }
+}
+
+
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  20% { transform: translateX(-2px) rotate(-0.5deg); }
+  40% { transform: translateX(2px) rotate(0.5deg); }
+  60% { transform: translateX(-1px) rotate(-0.3deg); }
+  80% { transform: translateX(1px) rotate(0.3deg); }
+}
+
+/* 3D card flip utilities */
+.backface-hidden {
+  backface-visibility: hidden;
+}
+.rotate-y-180 {
+  transform: rotateY(180deg);
+}
+.perspective-600 {
+  perspective: 600px;
+}
+.preserve-3d {
+  transform-style: preserve-3d;
+}

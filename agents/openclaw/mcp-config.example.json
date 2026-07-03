@@ -1,0 +1,12 @@
+{
+  "mcpServers": {
+    "bliss": {
+      "url": "https://bliss-agent-agent-production.up.railway.app/mcp",
+      "transport": "http",
+      "headers": {
+        "Authorization": "Bearer YOUR_MCP_TOKEN_HERE"
+      },
+      "description": "BLISS subscription management — view subscriptions, check vaults, trigger cancellations, verify on-chain proofs"
+    }
+  }
+}

@@ -1,0 +1,41 @@
+name: Health Check
+
+on:
+  schedule:
+    - cron: "0 */6 * * *"
+  workflow_dispatch:
+
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+
+permissions:
+  contents: read
+
+jobs:
+  health:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check live app
+        run: |
+          STATUS=$(curl -sL -o /dev/null -w "%{http_code}" --max-time 20 "https://www.bliss.xyz")
+          echo "App status: HTTP $STATUS"
+          if [ "$STATUS" -lt "200" ] || [ "$STATUS" -ge "400" ]; then
+            echo "::error title=App Down::https://www.bliss.xyz returned HTTP $STATUS"
+            exit 1
+          fi
+          echo "App is up (HTTP $STATUS)"
+
+      - name: Check Agent health
+        run: |
+          STATUS=$(curl -s -o /dev/null -w "%{http_code}" --max-time 10 \
+            "https://bliss-agent-agent-production.up.railway.app/health")
+          echo "Agent status: HTTP $STATUS"
+          if [ "$STATUS" != "200" ]; then
+            echo "::warning title=Agent::Railway agent returned HTTP $STATUS"
+          fi
+
+      - name: Check Algorand Testnet
+        run: |
+          STATUS=$(curl -s -o /dev/null -w "%{http_code}" --max-time 10 \
+            "https://testnet-api.algonode.cloud/v2/status")
+          echo "Testnet status: HTTP $STATUS"
